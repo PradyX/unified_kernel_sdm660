@@ -39,10 +39,6 @@ static const int cfq_hist_divisor = 4;
  * offset from end of queue service tree for idle class
  */
 #define CFQ_IDLE_DELAY		(NSEC_PER_SEC / 5)
-/* offset from end of group service tree under time slice mode */
-#define CFQ_SLICE_MODE_GROUP_DELAY (NSEC_PER_SEC / 5)
-/* offset from end of group service under IOPS mode */
-#define CFQ_IOPS_MODE_GROUP_DELAY (HZ / 5)
 
 /*
  * below this threshold, we consider thinktime immediate
@@ -97,8 +93,7 @@ struct cfq_rb_root {
 	u64 min_vdisktime;
 	struct cfq_ttime ttime;
 };
-#define CFQ_RB_ROOT	(struct cfq_rb_root) { .rb = RB_ROOT_CACHED, \
-			.rb_rightmost = NULL,			     \
+#define CFQ_RB_ROOT	(struct cfq_rb_root) { .rb = RB_ROOT, \
 			.ttime = {.last_end_request = ktime_get_ns(),},}
 
 /*
@@ -137,7 +132,7 @@ struct cfq_queue {
 	/* time when first request from queue completed and slice started. */
 	u64 slice_start;
 	u64 slice_end;
-	s64 slice_resid;
+	u64 slice_resid;
 
 	/* pending priority requests */
 	int prio_pending;
@@ -1446,8 +1441,7 @@ static inline u64 cfq_cfqq_slice_usage(struct cfq_queue *cfqq,
 		 * a single request on seeky media and cause lots of seek time
 		 * and group will never know it.
 		 */
-		slice_used = max_t(u64, (now - cfqq->dispatch_start),
-					jiffies_to_nsecs(1));
+		slice_used = max_t(u64, (now - cfqq->dispatch_start), 1);
 	} else {
 		slice_used = now - cfqq->slice_start;
 		if (slice_used > cfqq->allocated_slice) {
@@ -2675,7 +2669,7 @@ __cfq_slice_expired(struct cfq_data *cfqd, struct cfq_queue *cfqq,
 			cfqq->slice_resid = cfq_scaled_cfqq_slice(cfqd, cfqq);
 		else
 			cfqq->slice_resid = cfqq->slice_end - ktime_get_ns();
-		cfq_log_cfqq(cfqd, cfqq, "resid=%lld", cfqq->slice_resid);
+		cfq_log_cfqq(cfqd, cfqq, "resid=%llu", cfqq->slice_resid);
 	}
 
 	cfq_group_served(cfqd, cfqq->cfqg, cfqq);
@@ -2978,8 +2972,7 @@ static void cfq_arm_slice_timer(struct cfq_data *cfqd)
 	else
 		sl = cfqd->cfq_slice_idle;
 
-	hrtimer_start(&cfqd->idle_slice_timer, ns_to_ktime(sl),
-		      HRTIMER_MODE_REL);
+	mod_timer(&cfqd->idle_slice_timer, now + sl);
 	cfqg_stats_set_start_idle_time(cfqq->cfqg);
 	cfq_log_cfqq(cfqd, cfqq, "arm_idle: %llu group_idle: %d", sl,
 			group_idle ? 1 : 0);
@@ -4239,16 +4232,7 @@ static void cfq_completed_request(struct request_queue *q, struct request *rq)
 					cfqq_type(cfqq));
 
 		st->ttime.last_end_request = now;
-		/*
-		 * We have to do this check in jiffies since start_time is in
-		 * jiffies and it is not trivial to convert to ns. If
-		 * cfq_fifo_expire[1] ever comes close to 1 jiffie, this test
-		 * will become problematic but so far we are fine (the default
-		 * is 128 ms).
-		 */
-		if (!time_after(rq->start_time +
-				  nsecs_to_jiffies(cfqd->cfq_fifo_expire[1]),
-				jiffies))
+		if (!(rq->start_time + cfqd->cfq_fifo_expire[1] > now))
 			cfqd->last_delayed_sync = now;
 	}
 
