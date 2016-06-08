@@ -4755,13 +4755,13 @@ static ssize_t __FUNC(struct elevator_queue *e, const char *page, size_t count)	
 {									\
 	struct cfq_data *cfqd = e->elevator_data;			\
 	unsigned int __data;						\
-	cfq_var_store(&__data, (page));					\
+	int ret = cfq_var_store(&__data, (page), count);		\
 	if (__data < (MIN))						\
 		__data = (MIN);						\
 	else if (__data > (MAX))					\
 		__data = (MAX);						\
 	*(__PTR) = (u64)__data * NSEC_PER_USEC;				\
-	return count;							\
+	return ret;							\
 }
 USEC_STORE_FUNCTION(cfq_slice_idle_us_store, &cfqd->cfq_slice_idle, 0, UINT_MAX);
 USEC_STORE_FUNCTION(cfq_group_idle_us_store, &cfqd->cfq_group_idle, 0, UINT_MAX);
