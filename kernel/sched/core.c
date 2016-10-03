@@ -8856,6 +8856,7 @@ static void cpu_cgroup_fork(struct task_struct *task, void *private)
 
 	rq = task_rq_lock(task, &flags);
 
+	update_rq_clock(rq);
 	sched_change_group(task, TASK_SET_GROUP);
 
 	task_rq_unlock(rq, task, &flags);
