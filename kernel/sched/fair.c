@@ -6859,8 +6859,7 @@ static int select_energy_cpu_brute(struct task_struct *p, int prev_cpu, int sync
 
 
 #ifdef CONFIG_SCHED_WALT
-		if (!walt_disabled && sysctl_sched_use_walt_cpu_util &&
-			p->state == TASK_WAKING)
+		if (!walt_disabled && sysctl_sched_use_walt_cpu_util)
 			delta = task_util(p);
 #endif
 		/* Not enough spare capacity on previous cpu */
@@ -6921,7 +6920,7 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int sd_flag, int wake_f
 	// if (sd_flag & SD_BALANCE_WAKE)
 	// 	want_affine = !wake_wide(p) && !wake_cap(p, cpu, prev_cpu)
 	// 		      && cpumask_test_cpu(cpu, tsk_cpus_allowed(p));
-	
+
 	if (sd_flag & SD_BALANCE_WAKE) {
 		record_wakee(p);
 		want_affine = !wake_wide(p, sibling_count_hint) &&
