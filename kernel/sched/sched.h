@@ -705,6 +705,7 @@ struct rq {
 	u64 cur_irqload;
 	u64 avg_irqload;
 	u64 irqload_ts;
+	u64 cum_window_demand;
 #endif /* CONFIG_SCHED_WALT */
 
 
