@@ -8356,6 +8356,12 @@ static inline void update_sg_lb_stats(struct lb_env *env,
 	for_each_cpu_and(i, sched_group_cpus(group), env->cpus) {
 		struct rq *rq = cpu_rq(i);
 
+		/* if we are entering idle and there are CPUs with
+		 * their tick stopped, do an update for them
+		 */
+		if (env->idle == CPU_NEWLY_IDLE)
+			update_cpu_stats_if_tickless(rq);
+
 		/* Bias balancing toward cpus of our domain */
 		if (local_group)
 			load = target_load(i, load_idx);
@@ -9607,7 +9613,6 @@ static inline int on_null_domain(struct rq *rq)
  *   needed, they will kick the idle load balancer, which then does idle
  *   load balancing for all the idle CPUs.
  */
-
 static inline int find_new_ilb(void)
 {
 	int ilb;
