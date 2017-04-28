@@ -9676,7 +9676,6 @@ static inline int on_null_domain(struct rq *rq)
  *   needed, they will kick the idle load balancer, which then does idle
  *   load balancing for all the idle CPUs.
  */
-
 static inline int find_new_ilb(void)
 {
 	int ilb;
