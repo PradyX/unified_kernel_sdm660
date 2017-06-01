@@ -749,7 +749,10 @@ CONFIG_PSTORE_RAM=y
 CONFIG_PRINTK_TIME=y
 # CONFIG_DEBUG_INFO is not set
 CONFIG_MAGIC_SYSRQ=y
+<<<<<<< HEAD
 CONFIG_DETECT_HUNG_TASK=y
+=======
+>>>>>>> 479baa7a3da1... configs: align with security requirements
 CONFIG_PANIC_ON_OOPS=y
 CONFIG_PANIC_TIMEOUT=5
 # CONFIG_SCHEDSTATS is not set
