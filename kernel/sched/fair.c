@@ -5590,7 +5590,6 @@ static int sched_group_energy(struct energy_env *eenv)
 {
 	struct cpumask visit_cpus;
 	u64 total_energy = 0;
-	int cpu_count;
 
 	WARN_ON(!eenv->sg_top->sge);
 
@@ -5660,8 +5659,7 @@ static int sched_group_energy(struct energy_env *eenv)
 				idle_idx = group_idle_state(eenv, sg);
 				group_util = group_norm_util(eenv, sg);
 
-				sg_busy_energy = (group_util * sg->sge->cap_states[cap_idx].power)
-								>> SCHED_CAPACITY_SHIFT;
+				sg_busy_energy = (group_util * sg->sge->cap_states[cap_idx].power);
 				sg_idle_energy = ((SCHED_LOAD_SCALE-group_util)
 								* sg->sge->idle_states[idle_idx].power);
 
