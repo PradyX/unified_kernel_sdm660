@@ -44,11 +44,6 @@ unsigned int sysctl_sched_walt_init_task_load_pct = 15;
 /* true -> use PELT based load stats, false -> use window-based load stats */
 bool __read_mostly walt_disabled = false;
 
-/* Window size (in ns) */
-__read_mostly unsigned int walt_ravg_window = 20000000;
-
-/* Min window size (in ns) = 10ms */
-#ifdef CONFIG_HZ_300
 /*
  * Window size (in ns). Adjust for the tick size so that the window
  * rollover occurs just before the tick boundary.
