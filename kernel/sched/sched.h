@@ -1698,39 +1698,6 @@ static inline unsigned long cpu_util_freq(int cpu)
 
 #endif
 
-#ifdef CONFIG_CPU_FREQ_GOV_SCHED
-#define capacity_max SCHED_CAPACITY_SCALE
-extern unsigned int capacity_margin;
-extern struct static_key __sched_freq;
-
-static inline bool sched_freq(void)
-{
-	return static_key_false(&__sched_freq);
-}
-
-/*
- * sched_capacity_reqs expects capacity requests to be normalised.
- * All capacities should sum to the range of 0-1024.
- */
-DECLARE_PER_CPU(struct sched_capacity_reqs, cpu_sched_capacity_reqs);
-void update_cpu_capacity_request(int cpu, bool request);
-
-static inline void set_cfs_cpu_capacity(int cpu, bool request,
-					unsigned long capacity)
-{
-	unsigned long util = cpu_rq(cpu)->cfs.avg.util_avg;
-	unsigned long capacity = capacity_orig_of(cpu);
-
-#ifdef CONFIG_SCHED_WALT
-	if (!walt_disabled && sysctl_sched_use_walt_cpu_util)
-		util = div64_u64(cpu_rq(cpu)->prev_runnable_sum,
-				 walt_ravg_window >> SCHED_LOAD_SHIFT);
-#endif
-	return (util >= capacity) ? capacity : util;
-}
-
-#endif
-
 static inline void sched_rt_avg_update(struct rq *rq, u64 rt_delta)
 {
 	rq->rt_avg += rt_delta * arch_scale_freq_capacity(NULL, cpu_of(rq));
