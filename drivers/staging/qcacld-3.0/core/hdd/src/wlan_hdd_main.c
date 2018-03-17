@@ -17431,7 +17431,7 @@ QDF_STATUS hdd_monitor_mode_vdev_status(struct hdd_adapter *adapter)
 module_init(hdd_module_init);
 module_exit(hdd_module_exit);
 #else
-late_initcall(hdd_module_init);
+device_initcall(hdd_module_init);
 #endif
 
 MODULE_LICENSE("Dual BSD/GPL");
