@@ -50,6 +50,8 @@ static struct fts_ts_data *fts_data;
 #include "focaltech_gesture.c"
 #endif
 
+#include "focaltech_i2c.c"
+
 #if FTS_LOCK_DOWN_INFO_EN
 char tp_lockdown_info[30];
 #endif
