@@ -2508,7 +2508,7 @@ static void gtp_charger_updateconfig(struct goodix_ts_data *ts , s32 dir_update)
 
 	if (tp_flag >= 1) {		 /* charger plugged in */
 		if (!chr_pluggedin || dir_update) {
-			GTP_DEBUG("Update status for Charger Plugin");
+			GTP_INFO("Update status for Charger Plugin");
 			if (gtp_send_chr_cfg(i2c_connect_client) < 0)
 				GTP_ERROR("Send charger config failed.");
 			else
@@ -2518,7 +2518,7 @@ static void gtp_charger_updateconfig(struct goodix_ts_data *ts , s32 dir_update)
 		}
 	} else {						/* charger plugged out */
 		if (chr_pluggedin || dir_update) {
-			GTP_DEBUG("Update status for normal Plugout");
+			GTP_INFO("Update status for normal Plugout");
 			if (gtp_send_cfg(i2c_connect_client) < 0)
 				GTP_ERROR("Send normal config failed.");
 			else
