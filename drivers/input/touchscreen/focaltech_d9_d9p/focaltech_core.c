@@ -50,6 +50,11 @@ static struct fts_ts_data *fts_data;
 #include "focaltech_gesture.c"
 #endif
 
+/*****************************************************************************
+* Global variable or extern global variabls/functions
+*****************************************************************************/
+static struct fts_ts_data *fts_data;
+
 #include "focaltech_i2c.c"
 #if FTS_GESTURE_EN
 #include "focaltech_gesture.c"
