@@ -1223,7 +1223,7 @@ exit:
 	return ret;
 }
 
-static s32 gtp_get_fw_info(struct i2c_client *client, struct goodix_fw_info *fw_info)
+s32 gtp_get_fw_info(struct i2c_client *client, struct goodix_fw_info *fw_info)
 {
 	s32 ret = -1;
 	u8 buf[8] = {GTP_REG_VERSION >> 8, GTP_REG_VERSION & 0xff};
