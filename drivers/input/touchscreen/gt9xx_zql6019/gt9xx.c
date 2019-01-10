@@ -1531,9 +1531,6 @@ static int gtp_request_irq(struct goodix_ts_data *ts)
 		return ret;
 	}
 
-	return ret;
-}
-
 static s8 gtp_request_input_dev(struct goodix_ts_data *ts)
 {
 	s8 ret = -1;
