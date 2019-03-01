@@ -604,7 +604,6 @@ static s8 gtp_enter_sleep(struct goodix_ts_data *ts)
 static int gtp_wakeup_sleep(struct goodix_ts_data *ts)
 {
 	gtp_int_output(ts, 1);
-	gtp_reset_guitar(ts->client, 20);
 
 	return 0;
 }
@@ -1223,7 +1222,7 @@ exit:
 	return ret;
 }
 
-s32 gtp_get_fw_info(struct i2c_client *client, struct goodix_fw_info *fw_info)
+static s32 gtp_get_fw_info(struct i2c_client *client, struct goodix_fw_info *fw_info)
 {
 	s32 ret = -1;
 	u8 buf[8] = {GTP_REG_VERSION >> 8, GTP_REG_VERSION & 0xff};
@@ -1530,6 +1529,9 @@ static int gtp_request_irq(struct goodix_ts_data *ts)
 			"Failed to request irq %d\n", ts->client->irq);
 		return ret;
 	}
+
+	return ret;
+}
 
 static s8 gtp_request_input_dev(struct goodix_ts_data *ts)
 {
@@ -2508,7 +2510,7 @@ static void gtp_charger_updateconfig(struct goodix_ts_data *ts , s32 dir_update)
 
 	if (tp_flag >= 1) {		 /* charger plugged in */
 		if (!chr_pluggedin || dir_update) {
-			GTP_INFO("Update status for Charger Plugin");
+			GTP_DEBUG("Update status for Charger Plugin");
 			if (gtp_send_chr_cfg(i2c_connect_client) < 0)
 				GTP_ERROR("Send charger config failed.");
 			else
@@ -2518,7 +2520,7 @@ static void gtp_charger_updateconfig(struct goodix_ts_data *ts , s32 dir_update)
 		}
 	} else {						/* charger plugged out */
 		if (chr_pluggedin || dir_update) {
-			GTP_INFO("Update status for normal Plugout");
+			GTP_DEBUG("Update status for normal Plugout");
 			if (gtp_send_cfg(i2c_connect_client) < 0)
 				GTP_ERROR("Send normal config failed.");
 			else
