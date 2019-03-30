@@ -66,8 +66,6 @@
 
 #define VIRTUAL_KEY_MAP_FILE_NAME "virtualkeys." PLATFORM_DRIVER_NAME
 
-#define TYPE_B_PROTOCOL
-
 #define WAKEUP_GESTURE false
 
 
@@ -3823,10 +3821,8 @@ static void synaptics_rmi4_set_params(struct synaptics_rmi4_data *rmi4_data)
 			FORCE_LEVEL_MAX, 0, 0);
 #endif
 
-#ifdef TYPE_B_PROTOCOL
 	input_mt_init_slots(rmi4_data->input_dev,
 			rmi4_data->num_of_fingers, INPUT_MT_DIRECT);
-#endif
 
 	f1a = NULL;
 	if (!list_empty(&rmi->support_fn_list)) {
