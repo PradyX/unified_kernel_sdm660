@@ -2887,14 +2887,9 @@ long f2fs_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 
 	if (unlikely(f2fs_cp_error(F2FS_I_SB(file_inode(filp)))))
 		return -EIO;
-<<<<<<< HEAD
-	if (!f2fs_is_checkpoint_ready(F2FS_I_SB(file_inode(filp))))
-		return -ENOSPC;
-=======
 	ret = f2fs_is_checkpoint_ready(F2FS_I_SB(file_inode(filp)));
 	if (ret)
 		return ret;
->>>>>>> 0e8c655ea9ce... f2fs: fix to spread f2fs_is_checkpoint_ready()
 
 	switch (cmd) {
 	case F2FS_IOC_GETFLAGS:
@@ -2961,8 +2956,8 @@ static ssize_t f2fs_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
 		goto out;
 	}
 
-	if (iocb->ki_flags & IOCB_NOWAIT) {
-		if (!inode_trylock(inode)) {
+	if (!inode_trylock(inode)) {
+		if (iocb->ki_flags & IOCB_NOWAIT) {
 			ret = -EAGAIN;
 			goto out;
 		}
