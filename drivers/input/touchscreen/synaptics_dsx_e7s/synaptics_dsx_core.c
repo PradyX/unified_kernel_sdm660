@@ -43,6 +43,7 @@
 #include <linux/input/synaptics_dsx.h>
 #include "synaptics_dsx_core.h"
 #include <linux/input/mt.h>
+#endif
 #include <linux/kthread.h>
 #include <linux/sched/rt.h>
 
@@ -4203,7 +4204,7 @@ static int synaptics_rmi4_probe(struct platform_device *pdev)
 	const struct synaptics_dsx_hw_interface *hw_if;
 	const struct synaptics_dsx_board_data *bdata;
 
-	struct sched_param param = { .sched_priority = MAX_RT_PRIO / 2 };
+	struct sched_param param = { .sched_priority = MAX_RT_PRIO - 1 };
 
 	hw_if = pdev->dev.platform_data;
 	if (!hw_if) {
