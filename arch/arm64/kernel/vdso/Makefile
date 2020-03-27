@@ -27,13 +27,6 @@ ifneq ($(cc-name),clang)
 CFLAGS_vgettimeofday.o += -mcmodel=tiny
 endif
 
-# Force -O2 to avoid libgcc dependencies
-CFLAGS_REMOVE_vgettimeofday.o = -pg -Os
-CFLAGS_vgettimeofday.o = -O2 -fPIC
-ifneq ($(cc-name),clang)
-CFLAGS_vgettimeofday.o += -mcmodel=tiny
-endif
-
 # Disable gcov profiling for VDSO code
 GCOV_PROFILE := n
 KASAN_SANITIZE := n
