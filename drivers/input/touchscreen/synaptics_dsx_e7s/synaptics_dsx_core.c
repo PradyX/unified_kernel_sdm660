@@ -43,7 +43,6 @@
 #include <linux/input/synaptics_dsx.h>
 #include "synaptics_dsx_core.h"
 #include <linux/input/mt.h>
-#endif
 #include <linux/kthread.h>
 #include <linux/sched/rt.h>
 
