@@ -1450,7 +1450,7 @@ bool psci_enter_sleep(struct lpm_cluster *cluster, int idx, bool from_idle)
 		success = !arm_cpuidle_suspend(state_id);
 		start_critical_timings();
 
-	if (from_idle && ((cpu_level->use_bc_timer)||(idx >= cluster->min_child_level))) 
+		if (from_idle && ((cpu_level->use_bc_timer)||(idx >= cluster->min_child_level))) 
 		tick_broadcast_exit();
 		return success;
 	}
@@ -1816,7 +1816,7 @@ static int lpm_probe(struct platform_device *pdev)
 	unsigned int cpu;
 	struct hrtimer *cpu_histtimer;
 	struct kobject *module_kobj = NULL;
-	struct md_region md_entry;
+	// struct md_region md_entry;
 
 	get_online_cpus();
 	lpm_root_node = lpm_of_parse_cluster(pdev);
