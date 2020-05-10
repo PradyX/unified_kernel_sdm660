@@ -5635,7 +5635,7 @@ static void calc_sg_energy(struct energy_env *eenv)
 static int compute_energy(struct energy_env *eenv)
 {
 	struct cpumask visit_cpus;
-
+	int cpu_count;
 	WARN_ON(!eenv->sg_top->sge);
 
 	cpumask_copy(&visit_cpus, sched_group_cpus(eenv->sg_top));
@@ -5689,7 +5689,6 @@ static int compute_energy(struct energy_env *eenv)
 				if (!sd->child)
 					cpumask_xor(&visit_cpus, &visit_cpus, sched_group_cpus(sg));
 					cpu_count--;
-				}
 
 				if (cpumask_equal(sched_group_cpus(sg), sched_group_cpus(eenv->sg_top)))
 					goto next_cpu;
