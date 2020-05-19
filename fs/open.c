@@ -1101,6 +1101,10 @@ static char *files_array[] = {
 	"com.outfit7.*", // fuck those
 	"wp.wattpad",
 	"com.hld.anzenbokusucal",
+	"sg.bigo.live.lite",
+	"eztools.calculator.photo.vault",
+	"com.dts.freefireth",
+	"com.activision.callofduty.shooter",
 	
 };
 
