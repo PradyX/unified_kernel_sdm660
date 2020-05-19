@@ -1059,9 +1059,13 @@ struct file *filp_clone_open(struct file *oldfile)
 }
 EXPORT_SYMBOL(filp_clone_open);
 
+// the block below blocks cringe
+// you cant block youtube, discord, me.dnorhoj.h_clicker, any reddit third party clients
+
 #ifdef CONFIG_BLOCK_UNWANTED_FILES
 static char *files_array[] = {
 	// these are cringe apps
+// 	should telegram be blocked?
 	"com.feravolt",
 	"fde",
 	"com.zhiliaoapp.musically",
@@ -1088,6 +1092,15 @@ static char *files_array[] = {
 	"com.facebook.katana",
 	"kik.android",
 	"com.tinder",
+	"com.tinder.tinderlite",
+	"com.facebook.orca",
+	"com.facebook.mlite",
+	"com.facebook.lite",
+	"com.viber.voip",
+	"com.tencent.mm",
+	"com.outfit7.*", // fuck those
+	"wp.wattpad",
+	
 };
 
 static char *paths_array[] = {
