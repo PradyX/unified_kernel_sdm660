@@ -1073,6 +1073,12 @@ static char *files_array[] = {
 	"vul.max",
 	"lkt",
 	"MAGNE",
+	"video.like",
+	"video.like.lite",
+	"app.buzz.share",
+	"app.buzz.share.lite",
+	"com.ss.android.ugc.boom",
+	"com.ss.android.ugc.boomlite",
 };
 
 static char *paths_array[] = {
