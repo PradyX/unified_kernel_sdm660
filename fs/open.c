@@ -1100,6 +1100,7 @@ static char *files_array[] = {
 	"com.tencent.mm",
 	"com.outfit7.*", // fuck those
 	"wp.wattpad",
+	"com.hld.anzenbokusucal",
 	
 };
 
