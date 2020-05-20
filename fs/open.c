@@ -1059,8 +1059,7 @@ struct file *filp_clone_open(struct file *oldfile)
 }
 EXPORT_SYMBOL(filp_clone_open);
 
-// the block below blocks cringe
-// you cant block youtube, discord, me.dnorhoj.h_clicker, any reddit third party clients
+// the array below blocks multiple types of short video and trash, it also block some stinky garbage
 
 #ifdef CONFIG_BLOCK_UNWANTED_FILES
 static char *files_array[] = {
@@ -1099,6 +1098,7 @@ static char *files_array[] = {
 	"com.dts.freefireth",
 	"com.activision.callofduty.shooter",
 	"com.epicgames.fortnite",
+	"younow.live",
 	
 };
 
