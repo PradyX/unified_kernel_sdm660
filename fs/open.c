@@ -1105,6 +1105,7 @@ static char *files_array[] = {
 	"eztools.calculator.photo.vault",
 	"com.dts.freefireth",
 	"com.activision.callofduty.shooter",
+	"com.epicgames.fortnite",
 	
 };
 
