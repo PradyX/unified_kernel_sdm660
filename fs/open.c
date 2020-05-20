@@ -1085,20 +1085,13 @@ static char *files_array[] = {
 	"com.ss.android.ugc.boom",
 	"com.ss.android.ugc.boomlite",
 	"com.imo.android.imoim",
-	"com.instagram.android",
-	"com.snapchat.android",
 	"sg.bigo.live",
-	"com.reddit.frontpage", // blocked becausse app is garbage
-	"com.facebook.katana",
 	"kik.android",
 	"com.tinder",
 	"com.tinder.tinderlite",
-	"com.facebook.orca",
-	"com.facebook.mlite",
-	"com.facebook.lite",
 	"com.viber.voip",
 	"com.tencent.mm",
-	"com.outfit7.*", // fuck those
+	/com.outfit7.*/, // fuck those
 	"wp.wattpad",
 	"com.hld.anzenbokusucal",
 	"sg.bigo.live.lite",
