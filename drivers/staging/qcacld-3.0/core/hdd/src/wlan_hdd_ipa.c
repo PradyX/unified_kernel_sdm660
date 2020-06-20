@@ -5529,10 +5529,10 @@ int hdd_ipa_set_perf_level(hdd_context_t *hdd_ctx, uint64_t tx_packets,
  *
  * Return: 1 if PF_WAKE_UP_IDLE flag is set, 0 otherwise
  */
-static uint32_t hdd_ipa_get_wake_up_idle(void)
-{
-	return sched_get_wake_up_idle(current);
-}
+// static uint32_t hdd_ipa_get_wake_up_idle(void)
+// {
+// 	return sched_get_wake_up_idle(current);
+// }
 
 /**
  * hdd_ipa_set_wake_up_idle() - Set PF_WAKE_UP_IDLE flag in the task structure
@@ -5542,11 +5542,11 @@ static uint32_t hdd_ipa_get_wake_up_idle(void)
  *
  * Return: None
  */
-static void hdd_ipa_set_wake_up_idle(bool wake_up_idle)
-{
-	sched_set_wake_up_idle(current, wake_up_idle);
+// static void hdd_ipa_set_wake_up_idle(bool wake_up_idle)
+// {
+// 	sched_set_wake_up_idle(current, wake_up_idle);
 
-}
+// }
 
 static int hdd_ipa_aggregated_rx_ind(qdf_nbuf_t skb)
 {
@@ -5628,9 +5628,9 @@ static void hdd_ipa_send_skb_to_network(qdf_nbuf_t skb,
 	 * Set PF_WAKE_UP_IDLE flag in the task structure
 	 * This task and any task woken by this will be waken to idle CPU
 	 */
-	enabled = hdd_ipa_get_wake_up_idle();
-	if (!enabled)
-		hdd_ipa_set_wake_up_idle(true);
+	// enabled = hdd_ipa_get_wake_up_idle();
+	// if (!enabled)
+	// 	hdd_ipa_set_wake_up_idle(true);
 
 	if ((adapter->device_mode == QDF_SAP_MODE) &&
 	     (qdf_nbuf_is_ipv4_dhcp_pkt(skb) == true)) {
@@ -5671,8 +5671,8 @@ static void hdd_ipa_send_skb_to_network(qdf_nbuf_t skb,
 	/*
 	 * Restore PF_WAKE_UP_IDLE flag in the task structure
 	 */
-	if (!enabled)
-		hdd_ipa_set_wake_up_idle(false);
+	// if (!enabled)
+	// 	hdd_ipa_set_wake_up_idle(false);
 }
 
 /**
