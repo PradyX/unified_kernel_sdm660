@@ -119,3 +119,7 @@ android/configs/android-*.cfg
 
 # Compilation files
 out/
+#
+#Ignoring Android.bp link file
+#
+Android.bp
