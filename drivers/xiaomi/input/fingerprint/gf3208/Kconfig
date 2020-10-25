@@ -1,0 +1,2 @@
+config FINGERPRINT_GF3208
+	bool "goodix fingerprint gf3208"

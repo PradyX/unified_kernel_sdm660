@@ -1,0 +1,2 @@
+config FINGERPRINT_FPC1020
+	bool "fpc fingerprint fpc1020"

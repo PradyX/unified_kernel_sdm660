@@ -1,0 +1,15 @@
+menuconfig INPUT_FINGERPRINT
+	bool "Fingerprint Drivers"
+	help
+	  Say Y here, and a list of supported fingerprints will be displayed.
+	  This option doesn't affect the kernel.
+
+	  If unsure, say Y.
+
+if INPUT_FINGERPRINT
+
+source "drivers/xiaomi/input/fingerprint/fpc1020/Kconfig"
+
+source "drivers/xiaomi/input/fingerprint/gf3208/Kconfig"
+
+endif
