@@ -556,6 +556,10 @@ static void __init mm_init(void)
 	pti_init();
 }
 
+#if defined(CONFIG_FINGERPRINT_FPC1020) || defined(CONFIG_FINGERPRINT_GF3208)
+int fpsensor = 1;
+#endif
+
 asmlinkage __visible void __init start_kernel(void)
 {
 	char *command_line;
@@ -589,6 +593,15 @@ asmlinkage __visible void __init start_kernel(void)
 	page_alloc_init();
 
 	pr_notice("Kernel command line: %s\n", boot_command_line);
+
+#if defined(CONFIG_FINGERPRINT_FPC1020) || defined(CONFIG_FINGERPRINT_GF3208)
+	if (strstr(boot_command_line, "androidboot.fpsensor=fpc")) {
+		fpsensor = 1; // fpc fingerprint
+	} else {
+		fpsensor = 2; // goodix fingerprint
+	}
+#endif
+
 	/* parameters may set static keys */
 	jump_label_init();
 	parse_early_param();
