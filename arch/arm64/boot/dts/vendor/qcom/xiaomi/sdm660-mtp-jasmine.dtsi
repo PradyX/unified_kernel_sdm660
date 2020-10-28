@@ -2,6 +2,7 @@
 #include "pm660l.dtsi"
 #include "pm660-rpm-regulator.dtsi"
 #include "sdm660-regulator.dtsi"
+#include "sdm660-thermal.dtsi"
 #include "sdm660-common.dtsi"
 #include "sdm660-blsp.dtsi"
 #include "sdm660-camera.dtsi"
@@ -26,13 +27,6 @@
 
 &soc {
 	/delete-node/ qcom,qbt1000;
-
-	qcom,sensor-information {
-		sensor_information22: qcom,sensor-information-22 {
-			qcom,sensor-type = "adc";
-			qcom,sensor-name = "backlight_therm";
-		};
-	};
 
 	goodix_fp {
 		compatible = "goodix,fingerprint";
@@ -106,5 +100,18 @@
 				fsmgr_flags = "wait,slotselect";
 			};
 		};
+	};
+};
+
+&pm660_adc_tm {
+	io-channels = <&pm660_vadc ADC_XO_THERM_PU2>,
+			<&pm660_vadc ADC_AMUX_THM1_PU2>,
+			<&pm660_vadc ADC_AMUX_THM5_PU2>,
+			<&pm660_vadc ADC_AMUX_THM4_PU2>;
+
+	backlight_therm {
+		reg = <ADC_AMUX_THM4_PU2>;
+		qcom,ratiometric;
+		qcom,hw-settle-time = <200>;
 	};
 };
