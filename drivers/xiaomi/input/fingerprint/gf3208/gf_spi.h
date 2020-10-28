@@ -138,6 +138,7 @@ struct gf_dev {
 	char device_available;
 	char fb_black;
 	char wait_finger_down;
+	struct wakeup_source *fp_wakelock;
 };
 
 int gf_parse_dts(struct gf_dev *gf_dev);
