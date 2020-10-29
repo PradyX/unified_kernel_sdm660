@@ -1,0 +1,3 @@
+&pm660l_l3 {
+	regulator-always-on;
+};
