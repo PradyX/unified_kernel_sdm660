@@ -59,6 +59,11 @@
 		pinctrl-1 = <&msm_gpio_20_output_high>;
 		pinctrl-2 = <&msm_gpio_72>;
 	};
+
+	qcom,rmnet-ipa {
+		/delete-property/ qcom,ipa-platform-type-msm;
+		qcom,ipa-loaduC;
+	};
 };
 
 &qcom_seecom {
