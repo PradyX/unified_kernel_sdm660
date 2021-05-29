@@ -28,6 +28,10 @@
 		ti,i2s-bits = <16>;
 		status = "ok";
 	};
+
+	nq@28 {
+		status = "disabled";
+	};
 };
 
 &i2c_1 {
