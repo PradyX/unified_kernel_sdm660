@@ -120,3 +120,7 @@
 		qcom,hw-settle-time = <200>;
 	};
 };
+
+&dump_mem {
+	size = <0x0 0x400000>;
+};
