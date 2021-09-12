@@ -27,3 +27,8 @@
 	qcom,msm-mi2s-rx-lines = <1>;
 	qcom,msm-mi2s-tx-lines = <2>;
 };
+
+&msm_audio_ion {
+	qcom,iommu-dma-addr-pool = <0x10000000 0x10000000>;
+	qcom,smmu-sid-mask = /bits/ 64 <0xf>;
+};
