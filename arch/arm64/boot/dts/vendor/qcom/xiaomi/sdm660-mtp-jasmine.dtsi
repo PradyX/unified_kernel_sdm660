@@ -64,6 +64,10 @@
 		/delete-property/ qcom,ipa-platform-type-msm;
 		qcom,ipa-loaduC;
 	};
+
+	qcom,msm_fastrpc {
+		/delete-property/ qcom,fastrpc-adsp-sensors-pdr;
+	};
 };
 
 &qcom_seecom {
