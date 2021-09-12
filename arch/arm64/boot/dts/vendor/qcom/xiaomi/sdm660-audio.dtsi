@@ -39,9 +39,5 @@
 	qcom,msm-micbias1-ext-cap;
 	/delete-property/ qcom,msm-micbias2-ext-cap;
 	/delete-property/ qcom,us-euro-gpios;
-	pinctrl-names = "pri_i2s_active", "pri_i2s_sleep";
-	pinctrl-0 = <&pri_mi2s_sck_active &pri_mi2s_ws_active
-			&pri_mi2s_sd0_active &pri_mi2s_sd1_active>;
-	pinctrl-1 = <&pri_mi2s_sck_sleep &pri_mi2s_ws_sleep
-			&pri_mi2s_sd0_sleep &pri_mi2s_sd1_sleep>;
+	qcom,pri-mi2s-gpios = <&cdc_pri_mi2s_gpios>;
 };

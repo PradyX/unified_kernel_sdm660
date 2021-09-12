@@ -12,6 +12,15 @@
 		pinctrl-0 = <&wcd_usbc_analog_en2n_active>;
 		pinctrl-1 = <&wcd_usbc_analog_en2n_idle>;
 	};
+
+	cdc_pri_mi2s_gpios: msm_cdc_pinctrl_pri_mi2s {
+		compatible = "qcom,msm-cdc-pinctrl";
+		pinctrl-names = "aud_active", "aud_sleep";
+		pinctrl-0 = <&pri_mi2s_sck_active &pri_mi2s_ws_active
+				&pri_mi2s_sd0_active &pri_mi2s_sd1_active>;
+		pinctrl-1 = <&pri_mi2s_sck_sleep &pri_mi2s_ws_sleep
+				&pri_mi2s_sd0_sleep &pri_mi2s_sd1_sleep>;
+	};
 };
 
 &dai_mi2s0 {
