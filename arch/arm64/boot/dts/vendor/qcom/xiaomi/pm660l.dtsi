@@ -1,6 +1,7 @@
 &pm660l_wled {
 	qcom,fs-current-limit = <20000>;
 	qcom,string-cfg = <3>;
+	/delete-property/ qcom,auto-calibration;
 };
 
 &pm660l_flash0 {
