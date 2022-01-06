@@ -21,3 +21,12 @@
 		};
 	};
 };
+
+&soc {
+	sn_fuse: snfuse@0xA4128 {
+		compatible = "qcom,sn-fuse";
+		reg = <0x786134 0x4>,
+			<0x78607C 0x4>;
+		reg-names = "sn-base","fuse-state";
+	};
+};
