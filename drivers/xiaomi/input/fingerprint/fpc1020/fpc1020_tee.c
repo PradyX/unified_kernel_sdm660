@@ -39,6 +39,7 @@
 #include <linux/proc_fs.h>
 #include <linux/notifier.h>
 #include <linux/fb.h>
+#include <linux/mdss_io_util.h>
 
 #define FPC_TTW_HOLD_TIME 2000
 #define RESET_LOW_SLEEP_MIN_US 5000
@@ -92,6 +93,7 @@ struct fpc1020_data {
 	struct notifier_block fb_notifier;
 	bool fb_black;
 	bool wait_finger_down;
+	struct work_struct work;
 };
 
 static struct kernfs_node *soc_symlink = NULL;
@@ -490,6 +492,12 @@ static const struct attribute_group attribute_group = {
 	.attrs = attributes,
 };
 
+static void notification_work(struct work_struct *work)
+{
+	pr_debug("notification_work\n");
+	pr_debug("unblank\n");
+ }
+ 
 static irqreturn_t fpc1020_irq_handler(int irq, void *handle)
 {
 	struct fpc1020_data *fpc1020 = handle;
@@ -505,6 +513,7 @@ static irqreturn_t fpc1020_irq_handler(int irq, void *handle)
 	if (fpc1020->wait_finger_down && fpc1020->fb_black) {
 		printk("%s enter\n", __func__);
 		fpc1020->wait_finger_down = false;
+		schedule_work(&fpc1020->work);
 	}
 	return IRQ_HANDLED;
 }
@@ -742,6 +751,7 @@ static int fpc1020_probe(struct platform_device *pdev)
 	fpc1020->wait_finger_down = false;
 	fpc1020->fb_notifier = fpc_notif_block;
 	fb_register_client(&fpc1020->fb_notifier);
+	INIT_WORK(&fpc1020->work, notification_work);
 
 exit:
 	return rc;
