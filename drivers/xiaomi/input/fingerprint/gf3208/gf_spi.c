@@ -55,12 +55,11 @@
 #define VER_MINOR   2
 #define PATCH_LEVEL 10
 
-
-#define WAKELOCK_HOLD_TIME 2000 /* in ms */
+#define WAKELOCK_HOLD_TIME 2000	/* in ms */
 #define GF_SPIDEV_NAME     "goodix,fingerprint"
 /*device name after register in charater*/
 #define GF_DEV_NAME            "goodix_fp"
-#define	GF_INPUT_NAME	    "uinput-goodix"/*"goodix_fp" */
+#define	GF_INPUT_NAME	    "uinput-goodix"	/*"goodix_fp" */
 
 #define	CHRD_DRIVER_NAME	"goodix_fp_spi"
 #define	CLASS_NAME		    "goodix_fp"
@@ -651,6 +650,7 @@ static int gf_release(struct inode *inode, struct file *filp)
 		//gf_disable_irq(gf_dev);
 		irq_cleanup(gf_dev);
 		gf_cleanup(gf_dev);
+
 		/*power off the sensor*/
 		gf_dev->device_available = 0;
 		gf_power_off(gf_dev);
@@ -703,6 +703,10 @@ static int goodix_fb_state_chg_callback(struct notifier_block *nb,
 			if (gf_dev->device_available == 1) {
 				gf_dev->fb_black = 1;
 				gf_dev->wait_finger_down = true;
+				/* Disable IRQ when screen turns off,
+				 * only if proximity sensor is covered */
+				if (gf_dev->proximity_state)
+					gf_disable_irq(gf_dev);
 #if defined(GF_NETLINK_ENABLE)
 				msg = GF_NET_EVENT_FB_BLACK;
 				sendnlmsg(&msg);
@@ -713,8 +717,11 @@ static int goodix_fb_state_chg_callback(struct notifier_block *nb,
 			}
 			break;
 		case FB_BLANK_UNBLANK:
+		case FB_BLANK_NORMAL:
 			if (gf_dev->device_available == 1) {
 				gf_dev->fb_black = 0;
+				/* Unconditionally enable IRQ when screen turns on */
+				gf_enable_irq(gf_dev);
 #if defined(GF_NETLINK_ENABLE)
 				msg = GF_NET_EVENT_FB_UNBLACK;
 				sendnlmsg(&msg);
@@ -734,6 +741,41 @@ static int goodix_fb_state_chg_callback(struct notifier_block *nb,
 
 static struct notifier_block goodix_noti_block = {
 	.notifier_call = goodix_fb_state_chg_callback,
+};
+
+static ssize_t proximity_state_set(struct device *dev,
+	struct device_attribute *attr, const char *buf, size_t count)
+{
+	struct gf_dev *gf_dev = dev_get_drvdata(dev);
+	int rc, val;
+
+	rc = kstrtoint(buf, 10, &val);
+	if (rc)
+		return -EINVAL;
+
+	gf_dev->proximity_state = !!val;
+
+	if (gf_dev->fb_black) {
+		if (gf_dev->proximity_state) {
+			/* Disable IRQ when screen is off and proximity sensor is covered */
+			gf_disable_irq(gf_dev);
+		} else {
+			/* Enable IRQ when screen is off and proximity sensor is uncovered */
+			gf_enable_irq(gf_dev);
+		}
+	}
+
+	return count;
+}
+static DEVICE_ATTR(proximity_state, S_IWUSR, NULL, proximity_state_set);
+
+static struct attribute *attrs[] = {
+	&dev_attr_proximity_state.attr,
+	NULL
+};
+
+static const struct attribute_group attr_group = {
+	.attrs = attrs,
 };
 
 static struct class *gf_class;
@@ -850,6 +892,12 @@ static int gf_probe(struct platform_device *pdev)
 	gf_dev->notifier = goodix_noti_block;
 	fb_register_client(&gf_dev->notifier);
 
+	dev_set_drvdata(&gf_dev->spi->dev, gf_dev);
+	status = sysfs_create_group(&gf_dev->spi->dev.kobj, &attr_group);
+	if (status) {
+		pr_err("%s: Failed to create sysfs\n", __func__);
+		goto error_sysfs;
+	}
 	gf_dev->fp_wakelock = wakeup_source_register(NULL, "fp_wakelock");
 
 	proc_entry = proc_create(PROC_NAME, 0644, NULL, &proc_file_ops);
@@ -865,6 +913,8 @@ static int gf_probe(struct platform_device *pdev)
 
 	return status;
 
+error_sysfs:
+	sysfs_remove_group(&gf_dev->spi->dev.kobj, &attr_group);
 #ifdef AP_CONTROL_CLK
 gfspi_probe_clk_enable_failed:
 	gfspi_ioctl_clk_uninit(gf_dev);

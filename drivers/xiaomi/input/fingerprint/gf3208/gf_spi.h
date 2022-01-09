@@ -140,6 +140,7 @@ struct gf_dev {
 	char wait_finger_down;
 	struct work_struct work;
 	struct wakeup_source *fp_wakelock;
+	bool proximity_state; /* 0:far 1:near */
 };
 
 int gf_parse_dts(struct gf_dev *gf_dev);
