@@ -1,0 +1,23 @@
+#include "wayne-common-base.dtsi"
+
+/* sdm660.dtsi wayne specific diff */
+&firmware {
+	android {
+		/delete-node/ vbmeta;
+		fstab {
+			vendor {
+				mnt_flags = "ro,barrier=1";
+				fsmgr_flags = "wait,verify";
+			};
+
+			system {
+				compatible = "android,system";
+				dev = "/dev/block/platform/soc/c0c4000.sdhci/by-name/system";
+				type = "ext4";
+				mnt_flags = "ro,barrier=1";
+				fsmgr_flags = "wait,verify";
+				status = "ok";
+			};
+		};
+	};
+};
